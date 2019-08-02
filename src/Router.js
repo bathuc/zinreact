@@ -27,7 +27,7 @@ class Router extends Component {
     render() {
         const isLoggedIn = this.props.isLoggedIn;
         console.log('isAuthen', isLoggedIn);
-
+        console.log('token_auth:', localStorage.getItem('token'));
         if (isLoggedIn == false || isLoggedIn == 'false') {
             return (
                 <ConnectedRouter history={appHistory}>
