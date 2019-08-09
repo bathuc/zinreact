@@ -1,4 +1,4 @@
-import { UPDATE_AUTH_STATUS } from '../actions/authAction';
+import { UPDATE_AUTH_STATUS, UPDATE_USER_INFO } from '../actions/authAction';
 
 export function auth(state = {
     isLoggedIn: localStorage.getItem("isLoggedIn") ? localStorage.getItem("isLoggedIn") : false,
@@ -15,6 +15,12 @@ export function auth(state = {
                 isLoggedIn: action.isAuthen,
                 user: action.user,
                 token: action.token,
+            }
+        case UPDATE_USER_INFO:
+            localStorage.setItem('user', action.user);
+            return {
+                ...state,
+                user: action.user
             }
         default:
             return state

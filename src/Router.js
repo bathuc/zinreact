@@ -68,10 +68,12 @@ class Router extends Component {
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = state => {
+    console.log(state);
+    return ({
     isLoggedIn : state.auth.isLoggedIn,
     user : state.auth.user
-});
+})};
 
 const mapDispatchToProps = (dispatch) => ({
     dispatch : dispatch,

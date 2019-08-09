@@ -2,6 +2,7 @@ import { Auth } from "../Api";
 import axios from "axios";
 
 export const UPDATE_AUTH_STATUS = 'UPDATE_AUTH_STATUS';
+export const UPDATE_USER_INFO = 'UPDATE_USER_INFO';
 
 export const updateAuthStatus = (isAuthen = false, user = null, token = null) => ({
     type: UPDATE_AUTH_STATUS,
@@ -9,6 +10,11 @@ export const updateAuthStatus = (isAuthen = false, user = null, token = null) =>
     user: user,
     token: token
 });
+
+export const updateUserInfo = (user = null) => ({
+    type: UPDATE_USER_INFO,
+    user: user
+})
 
 export const checkAuthStatus = () => async (dispatch) => {
     try {
@@ -18,15 +24,17 @@ export const checkAuthStatus = () => async (dispatch) => {
         let getAdminUri = 'http://zinapi.tk/admin/get-admin';
         const adminRespond = await axios.post(getAdminUri);
         const admin = adminRespond.data;
-       dispatch(updateAuthStatus(true, admin, token))
+        if(token) {
+            dispatch(updateUserInfo(admin));
+        } else {
+            dispatch(updateUserInfo(null));
+        }
     } catch (e) {
-        dispatch(updateAuthStatus(false, null, null))
+        dispatch(updateUserInfo(null));
     }
 }
 
 export const logout = () => (dispatch) => {
-    localStorage.removeItem('token');
-    localStorage.clear();
     console.log('remove token', localStorage.getItem('token'));
     axios.defaults.headers.common['Authorization'] = null;
     dispatch(updateAuthStatus(false, null, null))
